@@ -1,0 +1,44 @@
+
+
+version: '3'  # docker compose version
+services:
+  web:
+    image: php:8.2.17-apache
+    ports:
+      - 80:80  # maps your local port to the container port
+    volumes:
+      - ./:/var/www/html  # maps the content of ./ in your local to the /var/www/html of the container
+    depends_on:
+      - db  # links this container to the db container
+    networks:
+      - lamp
+  db:
+    image: mysql:latest
+    volumes:
+      - ./mysql:/var/lib/mysql  # maps the content of ../mysql in your local to the /var/lib/mysql of the container
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password  # mysql root password
+      MYSQL_DATABASE: lamp  # mysql database name
+    networks:
+      - lamp
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8080:80  # maps your local port to the container port
+    depends_on:
+      - db  # links this container to the db container
+    environment:
+      PMA_HOST: db
+    networks:
+      - lamp
+
+
+
+networks:
+  lamp:
+    driver: bridge
+
+
+
+
+
