@@ -3,7 +3,8 @@
 version: '3'  # docker compose version
 services:
   web:
-    image: php:8.2.17-apache
+    build:
+      dockerfile: Dockerfile
     ports:
       - 80:80  # maps your local port to the container port
     volumes:
